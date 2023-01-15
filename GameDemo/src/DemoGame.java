@@ -3,7 +3,7 @@ public class DemoGame extends Game {
 
 	public DemoGame() {
 		GameState welcome = new WelcomeState();
-		GameState play = new PlayState();
+		GameState play = new PlayState(WIDTH,HEIGHT);
 		stateMachine.installState("Play", play);
 		stateMachine.installState("Welcome", welcome);
 		stateMachine.setStartState(welcome);
