@@ -64,6 +64,7 @@ public class PlayState extends GameState {
 		}
 		if (aKeyCode == KeyEvent.VK_SPACE) { // move to the right
 			player.setShot(true);
+			player.addShot();
 		}
 
 
