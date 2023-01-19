@@ -22,6 +22,7 @@ public class PlayState extends GameState {
     private Rocket rocket;
 	
 
+	int score=0;
 	String message;
 
 	public PlayState(int width, int height) {
@@ -150,6 +151,7 @@ public class PlayState extends GameState {
                         enemy.setImage(enemyExplode);
                         enemy.setIsAlive(false);
                         deaths++;
+						score+=100;
                         rocket.setIsVisible(false);
                     }
                 }
@@ -197,7 +199,7 @@ public class PlayState extends GameState {
 			}
         }
 
-		message = "" + (int)deltaTimeAverage;
+		message = "Your Score is: " + score;
 		
 		g.drawString(message, 10, 10);
 
