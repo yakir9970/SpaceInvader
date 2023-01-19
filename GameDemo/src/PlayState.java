@@ -4,11 +4,14 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PlayState extends GameState {
 
 	int width, height;
+	
+	int direction=-1;
 	  
 	boolean active;
 	float deltaTimeAverage;
@@ -36,7 +39,7 @@ public class PlayState extends GameState {
 		enemies=new ArrayList<Enemy>();
 		
 		for (int i = 0; i < 4; i++) {//4 rows of enemies
-            for (int j = 0; j < 8; j++) {//6 cols of enemies
+            for (int j = 0; j < 8; j++) {//8 cols of enemies
 
                 Enemy alien = new Enemy((width/3) + 60 * j,
                         (height/6) + 60 * i);
@@ -72,8 +75,50 @@ public class PlayState extends GameState {
 
 	public void update(long deltaTime) {
 		deltaTimeAverage = deltaTimeAverage* 0.9f + 0.1f*(float)deltaTime;
+		player.update(deltaTimeAverage,width,height);
+		
+		//enemies
+		for(Enemy enemy : enemies) {
+			float x=enemy.getX_enemy();
+			
+			if(x>=width-50&&direction!=-1) {
+				direction=-1;
+				Iterator<Enemy> enemyIter1=enemies.iterator();
+				while(enemyIter1.hasNext()) {
+					Enemy enemy1=enemyIter1.next();
+					enemy1.setY_enemy(enemy1.getY_enemy()+50);
+				}
+			}
+			
+			if(x<=0&&direction!=1) {
+				direction=1;
+				Iterator<Enemy> enemyIter2=enemies.iterator();
+				while(enemyIter2.hasNext()) {
+					Enemy enemy2=enemyIter2.next();
+					enemy2.setY_enemy(enemy2.getY_enemy()+50);
+				}
+			}
+		}
+		
+		Iterator<Enemy> iter = enemies.iterator();
 
-		player.update(deltaTime,width,height);
+        while (iter.hasNext()) {
+
+        	Enemy enemy = iter.next();
+
+            if (enemy.isVisible()) {
+
+                float y = enemy.getY_enemy();
+
+                //check collision with player
+                if (y > height-100) {
+                    //inGame = false;
+                    System.out.println("finish");
+                }
+
+                enemy.update(direction);
+            }
+        }
 		
 		
 		
@@ -142,8 +187,11 @@ public class PlayState extends GameState {
 		Graphics g = aGameFrameBuffer.graphics();
 
 		g.setColor(Color.WHITE);
-		g.fillRect((int)player.getRocketX(),(int)player.getRocketY(),2,5);
-		g.drawRect((int)player.getRocketX(),(int)player.getRocketY(),2,5);
+		List<Rocket> r=player.getRockets();
+		for(int i=0;i<r.size();i++) {
+			g.fillRect((int)r.get(i).getX_rocket(),(int)r.get(i).getY_rocket(),2,5);
+			g.drawRect((int)r.get(i).getX_rocket(),(int)r.get(i).getY_rocket(),2,5);
+		}
 		g.drawImage(spaceShip,(int)player.getX_player(),(int)player.getY_player(),null);
 		
         for (Enemy enemy : enemies) {

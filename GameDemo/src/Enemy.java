@@ -3,6 +3,7 @@ public class Enemy {
 	private float x_enemy;
 	private float y_enemy;
 	private int direction;
+	private boolean isVisible=true;
 	//player is width-50, height-50
 
 	public Enemy(float x,float y) {
@@ -24,6 +25,15 @@ public class Enemy {
 
 	public void setY_enemy(float y_enemy) {
 		this.y_enemy = y_enemy;
+	}
+	
+	public boolean isVisible() {
+		return this.isVisible;
+	}
+	
+	public void update(int direction) {
+			x_enemy = x_enemy + direction;
+		
 	}
 	
 	

@@ -79,9 +79,13 @@ public class Player {
 		rockets.add(new Rocket(x_player,y_player));
 		System.out.println(rockets.size());
 	}
+	
+	public List<Rocket> getRockets() {
+		return this.rockets;
+	}
 
 
-	public void update(long deltaTime,int width, int height) {
+	public void update(float deltaTime,int width, int height) {
 		if ((x_player > 0 && x_player < width-50)) {//change 50 to rocket size var
 
 			if (direction == 1) {
@@ -96,7 +100,7 @@ public class Player {
 			}
 
 			if(shot) {
-				rocket.setY_rocket(rocket.getY_rocket()- 0.3f*deltaTime);
+				rockets.get(rockets.size()-1).setY_rocket(rockets.get(rockets.size()-1).getY_rocket()- 0.3f*deltaTime);
 			}
 			
 			if(rocket.getY_rocket() <= 0) {
