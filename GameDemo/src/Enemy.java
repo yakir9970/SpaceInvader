@@ -9,12 +9,20 @@ public class Enemy {
 	private Image image;
 	//player is width-50, height-50
 
+	
 	public Enemy(float x,float y) {
 		x_enemy = x;
 		y_enemy=y;
 		isVisible = true;
 		isAlive = true;
 	}
+	
+
+
+	public Image getImage() {
+		return image;
+	}
+	
 	public void setImage(Image image) {
 		this.image = image;
 	}
@@ -46,6 +54,10 @@ public class Enemy {
 	
 	public boolean getIsVisible() {
 		return this.isVisible;
+	}
+	
+	public void setIsVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 	
 	public void update(int direction) {

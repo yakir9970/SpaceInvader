@@ -9,6 +9,7 @@ public class Rocket {
 		x_rocket = x+25;
 		y_rocket = y;
 		isVisible = true;
+		
 	}
 	
 	public Rocket() {

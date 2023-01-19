@@ -40,7 +40,7 @@ public class GameState extends GameInputEventProcessor {
 		return next();
 	}
 	
-	public void render(GameFrameBuffer aGameFrameBuffer) {
+	public void render(GameFrameBuffer aGameFrameBuffer){
 		Graphics2D g = aGameFrameBuffer.graphics();
 		
 		String text = "DO SOMETHING";

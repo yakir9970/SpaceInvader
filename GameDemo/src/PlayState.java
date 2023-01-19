@@ -43,12 +43,12 @@ public class PlayState extends GameState {
 		for (int i = 0; i < 4; i++) {//4 rows of enemies
             for (int j = 0; j < 8; j++) {//8 cols of enemies
 
-                Enemy alien = new Enemy((width/3) + 60 * j,
+                Enemy enemy = new Enemy((width/3) + 60 * j,
                         (height/6) + 60 * i);
-                enemies.add(alien);
+                enemy.setImage(enemyImage);
+                enemies.add(enemy);
             }
         }
-		//enemy=new Enemy((width/2)+25,height-500);
 	}
 
 	public void processKeyReleased(int aKeyCode) {
@@ -117,8 +117,9 @@ public class PlayState extends GameState {
 
                 //check collision with player
                 if (y > height-100) {
-                    //inGame = false;
+                    active = false;
                     System.out.println("finish");
+                    // change screen
                 }
 
                 enemy.update(direction);
@@ -140,14 +141,14 @@ public class PlayState extends GameState {
                 if (enemy.getIsVisible() && rocket.getIsVisible()) {
                 	// we need to see
                     if (X_rocket >= (X_enemy)
-                            && X_rocket <= (X_enemy + width)
+                            && X_rocket <= (X_enemy + 50)
                             && Y_rocket >= (Y_enemy)
-                            && Y_rocket <= (Y_enemy + height)) {
+                            && Y_rocket <= (Y_enemy + 50)) {
 
                         Image enemyExplode = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemyExplode.png");
+                        
                         enemy.setImage(enemyExplode);
-                        //g.drawImage(enemyExplode,(int)X_enemy,(int)Y_enemy,null);
-                        enemy.setIsAlive(true);
+                        enemy.setIsAlive(false);
                         deaths++;
                         rocket.setIsVisible(false);
                     }
@@ -155,8 +156,8 @@ public class PlayState extends GameState {
             }
 
             float y = rocket.getY_rocket();
-            y -= 4;
-            System.out.println(rocket.getX_rocket() +" " + rocket.getY_rocket());
+            y -= 6;
+            //System.out.println(rocket.getX_rocket() +" " + rocket.getY_rocket());
             if (y < 0) {
                 rocket.setIsVisible(false);
             } else {
@@ -187,7 +188,13 @@ public class PlayState extends GameState {
 		g.drawImage(spaceShip,(int)player.getX_player(),(int)player.getY_player(),null);
 		
         for (Enemy enemy : enemies) {
-        	g.drawImage(enemyImage,(int)enemy.getX_enemy(),(int)enemy.getY_enemy(),null);
+        	if (enemy.getIsVisible()) {
+            	g.drawImage(enemy.getImage(),(int)enemy.getX_enemy(),(int)enemy.getY_enemy(),null);
+			}
+        	
+        	if (!enemy.getIsAlive()) {
+				enemy.setIsVisible(false);
+			}
         }
 
 		message = "" + (int)deltaTimeAverage;
