@@ -1,15 +1,32 @@
+import java.awt.Image;
 
 public class Enemy {
 	private float x_enemy;
 	private float y_enemy;
 	private int direction;
-	private boolean isVisible=true;
+	private boolean isVisible;
+	private boolean isAlive;
+	private Image image;
 	//player is width-50, height-50
 
 	public Enemy(float x,float y) {
 		x_enemy = x;
 		y_enemy=y;
+		isVisible = true;
+		isAlive = true;
 	}
+	public void setImage(Image image) {
+		this.image = image;
+	}
+	
+	public boolean getIsAlive() {
+		return isAlive;
+	}
+
+	public void setIsAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+
 
 	public float getX_enemy() {
 		return x_enemy;
@@ -27,7 +44,7 @@ public class Enemy {
 		this.y_enemy = y_enemy;
 	}
 	
-	public boolean isVisible() {
+	public boolean getIsVisible() {
 		return this.isVisible;
 	}
 	

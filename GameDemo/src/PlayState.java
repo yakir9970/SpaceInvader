@@ -10,9 +10,8 @@ import java.util.List;
 public class PlayState extends GameState {
 
 	int width, height;
-	
-	int direction=-1;
-	  
+	int deaths;
+	int direction=-1;	  
 	boolean active;
 	float deltaTimeAverage;
 	Image spaceShip;//need to enter to the class
@@ -20,6 +19,7 @@ public class PlayState extends GameState {
 	
 	Player player;
     private List<Enemy> enemies;
+    private Rocket rocket;
 	
 
 	String message;
@@ -32,11 +32,13 @@ public class PlayState extends GameState {
 	public void enter(Object memento) {
 		active = true;
 		deltaTimeAverage = 0;
+		
 		spaceShip = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/halalit.png");
 		enemyImage = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemy.png");
 
 		player=new Player((width/2)+25,height-50);
 		enemies=new ArrayList<Enemy>();
+		rocket = new Rocket();
 		
 		for (int i = 0; i < 4; i++) {//4 rows of enemies
             for (int j = 0; j < 8; j++) {//8 cols of enemies
@@ -66,8 +68,11 @@ public class PlayState extends GameState {
 			//stay = false;
 		}
 		if (aKeyCode == KeyEvent.VK_SPACE) { // move to the right
-			player.setShot(true);
-			player.addShot();
+			if (active) {
+				if (!rocket.getIsVisible()) {
+					rocket = new Rocket(player.getX_player(),player.getY_player());
+				}
+			}
 		}
 
 
@@ -106,7 +111,7 @@ public class PlayState extends GameState {
 
         	Enemy enemy = iter.next();
 
-            if (enemy.isVisible()) {
+            if (enemy.getIsVisible()) {
 
                 float y = enemy.getY_enemy();
 
@@ -120,60 +125,46 @@ public class PlayState extends GameState {
             }
         }
 		
-		
-		
-//		if ((x_player > 0 && x_player < 590)) {
-//
-//			if (arrow == 1) {
-//				x_player = x_player - 0.2f*deltaTime;
-//				if(!shot) 
-//					x_rocket = x_rocket - 0.2f*deltaTime;
-//			}
-//			else if(arrow == 0){
-//				x_player = x_player + 0.2f*deltaTime;
-//				if(!shot) 
-//					x_rocket = x_rocket + 0.2f*deltaTime;
-//			}
-//
-//			if(shot) {
-//				y_rocket = y_rocket - 0.3f*deltaTime;
-//			}
-//			
-//			if(y_rocket <= 0) {
-//				y_rocket = 430;
-//				shot = false;
-//				x_rocket = x_player + 25; // centered
-//			}
-//
-//		} else if(x_player<=0) {
-//			if(arrow == 0)
-//				x_player = x_player + 0.2f*deltaTime;
-//			if(shot) {
-//				y_rocket = y_rocket - 0.3f*deltaTime;
-//			}
-//			
-//			if(y_rocket <= 0) {
-//				y_rocket = 430;
-//				shot = false;
-//				x_rocket = x_player + 25; // centered
-//			}
-//		} else if(x_player>=590) {
-//			if (arrow == 1) 
-//				x_player = x_player - 0.2f*deltaTime;
-//			if(shot) {
-//				y_rocket = y_rocket - 0.3f*deltaTime;
-//			}
-//			
-//			if(y_rocket <= 0) {
-//				y_rocket = 430;
-//				shot = false;
-//				x_rocket = x_player + 25; // centered
-//			}
-//		}
-		
+        //rocket
+        
+        if (rocket.getIsVisible()) {
 
-		//TODO
-		// we need to fix when the player is in the edges
+            float X_rocket = rocket.getX_rocket();
+            float Y_rocket = rocket.getY_rocket();
+
+            for (Enemy enemy : enemies) {
+
+                float X_enemy = enemy.getX_enemy();
+                float Y_enemy = enemy.getY_enemy();
+
+                if (enemy.getIsVisible() && rocket.getIsVisible()) {
+                	// we need to see
+                    if (X_rocket >= (X_enemy)
+                            && X_rocket <= (X_enemy + width)
+                            && Y_rocket >= (Y_enemy)
+                            && Y_rocket <= (Y_enemy + height)) {
+
+                        Image enemyExplode = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemyExplode.png");
+                        enemy.setImage(enemyExplode);
+                        //g.drawImage(enemyExplode,(int)X_enemy,(int)Y_enemy,null);
+                        enemy.setIsAlive(true);
+                        deaths++;
+                        rocket.setIsVisible(false);
+                    }
+                }
+            }
+
+            float y = rocket.getY_rocket();
+            y -= 4;
+            System.out.println(rocket.getX_rocket() +" " + rocket.getY_rocket());
+            if (y < 0) {
+                rocket.setIsVisible(false);
+            } else {
+                rocket.setY_rocket(y);
+            }
+        }
+		
+	
 
 	}
 
@@ -187,11 +178,12 @@ public class PlayState extends GameState {
 		Graphics g = aGameFrameBuffer.graphics();
 
 		g.setColor(Color.WHITE);
-		List<Rocket> r=player.getRockets();
-		for(int i=0;i<r.size();i++) {
-			g.fillRect((int)r.get(i).getX_rocket(),(int)r.get(i).getY_rocket(),2,5);
-			g.drawRect((int)r.get(i).getX_rocket(),(int)r.get(i).getY_rocket(),2,5);
+		if (rocket.getIsVisible()) {
+			g.fillRect((int)rocket.getX_rocket(),(int)rocket.getY_rocket(),2,5);
+			g.drawRect((int)rocket.getX_rocket(),(int)rocket.getY_rocket(),2,5);
+			
 		}
+		
 		g.drawImage(spaceShip,(int)player.getX_player(),(int)player.getY_player(),null);
 		
         for (Enemy enemy : enemies) {
@@ -205,7 +197,3 @@ public class PlayState extends GameState {
 	}
 
 }
-
-/*TODO:
-	change the image and draw func to be in the object class
-*/

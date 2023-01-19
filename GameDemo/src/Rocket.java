@@ -2,11 +2,25 @@
 public class Rocket {
 	private float x_rocket;
 	private float y_rocket;
+	private boolean isVisible;
 	//player is width-2, height-5
 
 	public Rocket(float x, float y) {
 		x_rocket = x+25;
 		y_rocket = y;
+		isVisible = true;
+	}
+	
+	public Rocket() {
+		isVisible = true;
+	}
+	
+	public boolean getIsVisible() {
+		return isVisible;
+	}
+
+	public void setIsVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 	public float getX_rocket() {
