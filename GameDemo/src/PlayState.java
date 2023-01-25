@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -12,46 +13,74 @@ public class PlayState extends GameState {
 
 	int width, height;
 	int deaths;
-	int direction=-1;	  
+	int direction=-1;	 
+	int level;
 	boolean active;
+	boolean gameOver;
+	boolean lostHealth;
 	float deltaTimeAverage;
 	Image spaceShip;//need to enter to the class
 	Image enemyImage;//need to enter to the class
+	Image heart1;
+	Image heart2;
+	Image heart3;
+
 	
 	Player player;
     private List<Enemy> enemies;
     private Rocket rocket;
 	
 
-	int score=0;
 	String message;
 
 	public PlayState(int width, int height) {
 		this.width=width;
 		this.height=height;
+		
 	}
+	
 	@Override
 	public void enter(Object memento) {
 		active = true;
 		deltaTimeAverage = 0;
+		data=(Data) memento;
 		
 		spaceShip = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/halalit.png");
 		enemyImage = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemy.png");
+		heart1=spaceShip;
+		heart2=spaceShip;
+		heart3=spaceShip;
+		
+		if(data.getLives()==3) {
+			gameOver=false;
+			lostHealth=false;
+			enemies=new ArrayList<Enemy>();
+			for (int i = 0; i < 4; i++) {//4 rows of enemies
+	            for (int j = 0; j < 8; j++) {//8 cols of enemies
+	
+	                Enemy enemy = new Enemy((width/3) + 60 * j,
+	                        (height/6) + 60 * i);
+	                enemy.setImage(enemyImage);
+	                enemies.add(enemy);
+	            }
+	        }
+		}
+		
+		else {
+			for (int i = 0; i < 4; i++) {//4 rows of enemies
+	            for (int j = 0; j < 8; j++) {//8 cols of enemies
+	
+	                enemies.get(i*8+j).setX_enemy((width/3) + 60 * j);
+	                enemies.get(i*8+j).setY_enemy((height/6) + 60 * i);
+	            }
+	        }
+		}
 
 		player=new Player((width/2)+25,height-50);
-		data=(Data) memento;
-		enemies=new ArrayList<Enemy>();
+		
 		rocket = new Rocket();
 		
-		for (int i = 0; i < 4; i++) {//4 rows of enemies
-            for (int j = 0; j < 8; j++) {//8 cols of enemies
-
-                Enemy enemy = new Enemy((width/3) + 60 * j,
-                        (height/6) + 60 * i);
-                enemy.setImage(enemyImage);
-                enemies.add(enemy);
-            }
-        }
+		
 	}
 
 	public void processKeyReleased(int aKeyCode) {
@@ -63,12 +92,10 @@ public class PlayState extends GameState {
 
 		if (aKeyCode == KeyEvent.VK_LEFT) { // move to the left
 			player.setDirection(1);
-			//stay = false;
 		}
 
 		if (aKeyCode == KeyEvent.VK_RIGHT) { // move to the right
 			player.setDirection(0);
-			//stay = false;
 		}
 		if (aKeyCode == KeyEvent.VK_SPACE) { // move to the right
 			if (active) {
@@ -120,7 +147,10 @@ public class PlayState extends GameState {
 
                 //check collision with player
                 if (y > height-100) {
+                	//need to reduce live after collision
                     active = false;
+//                    gameOver=true;
+                	lostHealth=true;
                     //System.out.println("finish");
                     // change screen
                 }
@@ -154,7 +184,7 @@ public class PlayState extends GameState {
                         enemy.setImage(enemyExplode);
                         enemy.setIsAlive(false);
                         deaths++;
-						score+=100;
+						data.setScore(data.getScore()+100);
                         rocket.setIsVisible(false);
                     }
                 }
@@ -170,17 +200,28 @@ public class PlayState extends GameState {
             }
         }
 		
-	
-
 	}
 
 	public boolean isActive() { return active; }
 
 	public String next() {
-		if(!active)
+		if(gameOver)
 			return "GameOver";
+		
+		else if(lostHealth) {
+			reduceLives();
+			return "LostHealth";	
+		}
 		else
 			return "Welcome";
+	}
+	
+	private void reduceLives() {
+		data.setLives(data.getLives()-1);
+		if(data.getLives()==1) {
+			gameOver=true;
+			lostHealth=false;
+		}
 	}
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
@@ -204,10 +245,20 @@ public class PlayState extends GameState {
 				enemy.setIsVisible(false);
 			}
         }
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 
-		message = "Your Score is: " + score;
+		message = "Score: " + data.getScore();
 		
-		g.drawString(message, 10, 10);
+		g.drawString(message, 20, 50);
+		
+		g.drawString("Level "+level, 600, 50);
+
+		if(data.getLives()>=1)
+			g.drawImage(heart1,1050,30,null);
+		if(data.getLives()>=2)
+			g.drawImage(heart2,1120,30,null);
+		if(data.getLives()>=3)
+			g.drawImage(heart3,1190,30,null);
 
 	}
 

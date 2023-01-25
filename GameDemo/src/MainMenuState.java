@@ -26,7 +26,7 @@ public class MainMenuState extends GameState {
         if (aKeyCode == KeyEvent.VK_2)
             data.setDiff(2);
         if (aKeyCode == KeyEvent.VK_3)
-            data.setDiff(3);
+            data.setDiff(20);
         active = false;
     }
 

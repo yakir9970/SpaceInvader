@@ -7,11 +7,14 @@ public class DemoGame extends Game {
 		GameState play = new PlayState(WIDTH,HEIGHT);
 		GameState mainMenu = new MainMenuState(WIDTH,HEIGHT);
 		GameState gameOver = new GameOverState(WIDTH,HEIGHT);
+		GameState lostHealth = new LostHealthState(WIDTH,HEIGHT);
 		stateMachine.installState("Play", play);
 		stateMachine.installState("Welcome", welcome);
 		stateMachine.installState("MainMenu", mainMenu);
 		stateMachine.installState("GameOver", gameOver);
-		stateMachine.setStartState(gameOver);
+		stateMachine.installState("LostHealth", lostHealth);
+
+		stateMachine.setStartState(welcome);
 	}
 	
 	public static void main( String[] args ) {
