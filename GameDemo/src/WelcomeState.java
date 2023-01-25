@@ -1,10 +1,10 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class WelcomeState extends GameState {
 
 	boolean active;
+	Image logo;
 	
 	public void enter(Object memento) {
 		active = true;
@@ -20,16 +20,19 @@ public class WelcomeState extends GameState {
 	public boolean isActive() { return active; }
 	
 	public String next() {
-		return "Play";
+		return "MainMenu";
 	}
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
+
 		Graphics g = aGameFrameBuffer.graphics();
-		
-		String text = "PRESS ANY KEY TO PLAY";
+
+		logo = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/logo.png");
+		String text = "PRESS ANY KEY TO CONTINUE";
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.setColor(Color.white);
-		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth)/2, aGameFrameBuffer.getHeight()/2);
+		g.drawImage(logo,150,100,null);
+		g.drawString(text, 550, 600);
 
 	}
 }

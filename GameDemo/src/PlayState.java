@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PlayState extends GameState {
+	Data data;
 
 	int width, height;
 	int deaths;
@@ -29,7 +30,7 @@ public class PlayState extends GameState {
 		this.width=width;
 		this.height=height;
 	}
-
+	@Override
 	public void enter(Object memento) {
 		active = true;
 		deltaTimeAverage = 0;
@@ -38,6 +39,7 @@ public class PlayState extends GameState {
 		enemyImage = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemy.png");
 
 		player=new Player((width/2)+25,height-50);
+		data=(Data) memento;
 		enemies=new ArrayList<Enemy>();
 		rocket = new Rocket();
 		
@@ -119,11 +121,12 @@ public class PlayState extends GameState {
                 //check collision with player
                 if (y > height-100) {
                     active = false;
-                    System.out.println("finish");
+                    //System.out.println("finish");
                     // change screen
                 }
 
-                enemy.update(direction);
+
+                enemy.update(direction*data.getDiff());
             }
         }
 		
@@ -174,7 +177,10 @@ public class PlayState extends GameState {
 	public boolean isActive() { return active; }
 
 	public String next() {
-		return "Welcome";
+		if(!active)
+			return "GameOver";
+		else
+			return "Welcome";
 	}
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
@@ -205,4 +211,8 @@ public class PlayState extends GameState {
 
 	}
 
+	@Override
+	public Object memento() {
+		return data;
+	}
 }

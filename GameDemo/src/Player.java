@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+
+	private int diff;
+
+
+
 	private float x_player;
 	private float y_player;
 	private int direction;
@@ -11,6 +16,8 @@ public class Player {
 		x_player = x;
 		y_player=y;
 	}
+
+
 
 
 	public float getX_player() {
@@ -41,6 +48,10 @@ public class Player {
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
+
+	public void setDiff(int diff) {this.diff = diff;}
+
+	public int getDiff() {return diff;}
 
 
 
