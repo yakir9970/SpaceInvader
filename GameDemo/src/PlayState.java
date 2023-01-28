@@ -18,10 +18,11 @@ public class PlayState extends GameState {
 	boolean active;
 	boolean gameOver;
 	boolean lostHealth;
-	boolean finishLevelOne = false;
+	boolean gameWon;
+	boolean finishLevelOne;
 	float deltaTimeAverage;
-	Image spaceShip;//need to enter to the class
-	Image enemyImage;//need to enter to the class
+	Image spaceShip;
+	Image enemyImage;
 	Image heart1;
 	Image heart2;
 	Image heart3;
@@ -45,12 +46,9 @@ public class PlayState extends GameState {
 	public void enter(Object memento) {
 
 		player=new Player((width/2)+25,height-50);
-
 		rocket = new Rocket();
-		//if (finishLevelOne) {  ////// need to return the !
 		active = true;
 		finishLevelOne=false;
-		//level = 1;
 		deltaTimeAverage = 0;
 		data=(Data) memento;
 
@@ -66,8 +64,8 @@ public class PlayState extends GameState {
 				lostHealth=false;
 				enemies=new ArrayList<Enemy>();
 
-				for (int i = 0; i < 4; i++) {//4 rows of enemies
-					for (int j = 0; j < 8; j++) {//8 cols of enemies
+				for (int i = 0; i < 6; i++) {//4 rows of enemies
+					for (int j = 0; j < 9; j++) {//8 cols of enemies
 
 						Enemy enemy = new Enemy((width/3) + 60 * j,
 								(height/6) + 60 * i);
@@ -78,11 +76,11 @@ public class PlayState extends GameState {
 			}
 
 			else {
-				for (int i = 0; i < 4; i++) {//4 rows of enemies
-					for (int j = 0; j < 8; j++) {//8 cols of enemies
+				for (int i = 0; i < 6; i++) {//4 rows of enemies
+					for (int j = 0; j < 9; j++) {//8 cols of enemies
 
-						enemies.get(i*8+j).setX_enemy((width/3) + 60 * j);
-						enemies.get(i*8+j).setY_enemy((height/6) + 60 * i);
+						enemies.get(i*9+j).setX_enemy((width/3) + 60 * j);
+						enemies.get(i*9+j).setY_enemy((height/6) + 60 * i);
 					}
 				}
 			}
@@ -94,8 +92,8 @@ public class PlayState extends GameState {
 				lostHealth=false;
 				enemies=new ArrayList<Enemy>();
 
-				for (int i = 0; i < 2; i++) {//4 rows of enemies
-					for (int j = 0; j < 2; j++) {//8 cols of enemies
+				for (int i = 0; i < 7; i++) {//4 rows of enemies
+					for (int j = 0; j < 10; j++) {//8 cols of enemies
 
 						Enemy enemy = new Enemy((width/3) + 60 * j,
 								(height/6) + 60 * i);
@@ -103,11 +101,12 @@ public class PlayState extends GameState {
 						enemies.add(enemy);
 					}
 				}
+				removeEnemies();
 			}
 
 			else {
-				for (int i = 0; i < 2; i++) {//4 rows of enemies
-					for (int j = 0; j < 2; j++) {//8 cols of enemies
+				for (int i = 0; i < 7; i++) {//4 rows of enemies
+					for (int j = 0; j < 10; j++) {//8 cols of enemies
 
 						enemies.get(i*2+j).setX_enemy((width/3) + 60 * j);
 						enemies.get(i*2+j).setY_enemy((height/6) + 60 * i);
@@ -116,66 +115,24 @@ public class PlayState extends GameState {
 			}
 		}
 
-		//}
-//		else {
-//			active = true;
-//			//level = 2;
-//			deltaTimeAverage = 0;
-//			data=(Data) memento;
-//
-//
-//			spaceShip = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/halalit.png");
-//			enemyImage = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/enemy.png");
-//			heart1=spaceShip;
-//			heart2=spaceShip;
-//			heart3=spaceShip;
-//
-//
-//			if (data.getLives()==3) {
-//				gameOver=false;
-//				lostHealth=false;
-//				enemies=new ArrayList<Enemy>();
-////				for (int i = 0; i < 6; i++){
-////					for (int j = i; j < 6; j++) {
-////						Enemy enemy = new Enemy((width/3) + 60 * j,
-////								(height/6) + 60 * i);
-////						enemy.setImage(enemyImage);
-////						enemies.add(enemy);
-////					}
-////				}
-//
-//				for (int i = 0; i < 4; i++) {//4 rows of enemies
-//					for (int j = 0; j < 8; j++) {//8 cols of enemies
-//
-//						Enemy enemy = new Enemy((width/3) + 60 * j,
-//								(height/6) + 60 * i);
-//						enemy.setImage(enemyImage);
-//						enemies.add(enemy);
-//					}
-//				}
-//			}
-//			else {
-////				for (int i = 0; i < 6; i++){
-////					for (int j = i; j < 6; j++) {
-////						enemies.get(i*(6-i)+j).setX_enemy((width/3) + 60 * j);
-////						enemies.get(i*(6-i)+j).setY_enemy((height/6) + 60 * i);
-////						System.out.println(i*(6-i)+j);
-////					}
-////				}
-//
-//				for (int i = 0; i < 4; i++) {//4 rows of enemies
-//					for (int j = 0; j < 8; j++) {//8 cols of enemies
-//
-//						enemies.get(i*8+j).setX_enemy((width/3) + 60 * j);
-//						enemies.get(i*8+j).setY_enemy((height/6) + 60 * i);
-//					}
-//				}
-//			}
-		//}
 
 
 
 
+	}
+
+	private void removeEnemies() {
+		for(int i=0;i<4;i++)
+		{
+			enemies.get(i+i*10).setIsAlive(false);
+			enemies.get((9-i)+i*10).setIsAlive(false);
+		}
+		for(int i=4,counter=2;i<7;i++,counter--)		{
+			enemies.get(i*10+counter).setIsAlive(false);
+			enemies.get((i+1)*10-(counter+1)).setIsAlive(false);
+		}
+		enemies.get(25).setIsAlive(false);
+		enemies.get(24).setIsAlive(false);
 	}
 
 	public void processKeyReleased(int aKeyCode) {
@@ -210,22 +167,20 @@ public class PlayState extends GameState {
 
 	public void update(long deltaTime) {
 		// i try
-		if (deaths > 0) {
-			//System.out.println(deaths + ("\n"));
-			//finishLevelOne = true;
+		if (deaths==1) {
 
 			if(data.getLevel()==1) {
 				data.setLevel(2);
 				finishLevelOne=true;
 			}
 			else if(data.getLevel()==2) {
-				finishLevelOne=true;
+				gameWon=true;
 			}
 			active=false;
 			deaths=0;
 			data.setLives(3);
 			lostHealth=false;
-			//next();
+
 		}
 
 		deltaTimeAverage = deltaTimeAverage* 0.9f + 0.1f*(float)deltaTime;
@@ -335,15 +290,22 @@ public class PlayState extends GameState {
 		else if (finishLevelOne) {
 			return "LevelFinished";
 		}
+		else if(gameWon)
+		{
+			data.resetData();
+			return "GameFinished";
+		}
 		else
 			return "Welcome";
+
 	}
 
 	private void reduceLives() {
 		data.setLives(data.getLives()-1);
-		if(data.getLives()==1) {
+		if(data.getLives()==0) {
 			gameOver=true;
 			lostHealth=false;
+			data.setLives(3);
 		}
 	}
 

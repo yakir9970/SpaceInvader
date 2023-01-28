@@ -43,10 +43,11 @@ public class LostHealthState extends GameState{
 
         int textWidth = g.getFontMetrics().stringWidth(text);
         g.setColor(Color.white);
+
         g.drawImage(logo,400,100,null);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        g.drawString(text, 570, 550);
-        g.drawString(choice, 500, 600);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString(text, 500, 550);
+        g.drawString(choice, 400, 600);
 
 
 

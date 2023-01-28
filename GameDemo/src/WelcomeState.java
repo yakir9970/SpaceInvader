@@ -30,9 +30,10 @@ public class WelcomeState extends GameState {
 		logo = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/logo.png");
 		String text = "PRESS ANY KEY TO CONTINUE";
 		int textWidth = g.getFontMetrics().stringWidth(text);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 		g.setColor(Color.white);
 		g.drawImage(logo,150,100,null);
-		g.drawString(text, 550, 600);
+		g.drawString(text, 380, 600);
 
 	}
 }

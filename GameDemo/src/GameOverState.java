@@ -48,11 +48,11 @@ public class GameOverState extends GameState{
         int textWidthScore = g.getFontMetrics().stringWidth(score);
         g.setColor(Color.white);
         g.drawImage(logo,400,0,null);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        g.drawString(text, 570, 550);
-        g.drawString(score, 700, 550);
-        g.drawString(choice, 480, 650);
-        //TODO add next state functionality, and also score memento transition , add lives to the player , implement enemy collision with life reduction , reset enemies if all were destroyed
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString(text, 560, 500);
+        g.drawString(score, 670, 500);
+        g.drawString(choice, 390, 630);
+
 
 
 

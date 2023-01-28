@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
-public class LevelFinished extends GameState{
+public class WinState extends GameState{
     Image winLogo;
     int width;
     int height;
@@ -13,7 +13,7 @@ public class LevelFinished extends GameState{
     boolean active;
 
 
-    public LevelFinished(int width,int height) {
+    public WinState(int width,int height) {
         this.height=height;
         this.width=width;
     }
@@ -32,24 +32,24 @@ public class LevelFinished extends GameState{
     public boolean isActive() { return active; }
 
     public String next() {
-        return "Play";
+        return "Welcome";
     }
 
     public void render(GameFrameBuffer aGameFrameBuffer) {
 
         Graphics g = aGameFrameBuffer.graphics();
 
-        winLogo = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/levelWon.png");
+        winLogo = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/youwin.png");
 
-        String text = "You Finished Level 1";
-        String choice="Press any key to continue to the next level";
 
-        int textWidth = g.getFontMetrics().stringWidth(text);
+        String choice="Press any key to continue to the main menu";
+
+
         g.setColor(Color.white);
-        g.drawImage(winLogo,400,0,null);
+        g.drawImage(winLogo,340,-50,null);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(text, 500, 500);
-        g.drawString(choice, 370, 600);
+
+        g.drawString(choice, 360, 560);
 
 
     }

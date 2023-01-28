@@ -9,6 +9,7 @@ public class DemoGame extends Game {
 		GameState gameOver = new GameOverState(WIDTH,HEIGHT);
 		GameState lostHealth = new LostHealthState(WIDTH,HEIGHT);
 		GameState levelFinished = new LevelFinished(WIDTH,HEIGHT);
+		GameState gameFinished = new WinState(WIDTH,HEIGHT);
 
 		stateMachine.installState("Play", play);
 		stateMachine.installState("Welcome", welcome);
@@ -16,6 +17,7 @@ public class DemoGame extends Game {
 		stateMachine.installState("GameOver", gameOver);
 		stateMachine.installState("LostHealth", lostHealth);
 		stateMachine.installState("LevelFinished", levelFinished);
+		stateMachine.installState("GameFinished", gameFinished);
 
 		stateMachine.setStartState(welcome);
 	}

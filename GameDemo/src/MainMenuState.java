@@ -31,21 +31,12 @@ public class MainMenuState extends GameState {
                 data.setDiff(2);
                 break;
             case KeyEvent.VK_3:
-                data.setDiff(20);
+                data.setDiff(3);
                 break;
         }
 
         if(aKeyCode==KeyEvent.VK_ESCAPE||aKeyCode==KeyEvent.VK_1||aKeyCode==KeyEvent.VK_2||aKeyCode==KeyEvent.VK_3)
             active = false;
-//        if (aKeyCode == KeyEvent.VK_ESCAPE)
-//            System.exit(0);
-//        if (aKeyCode == KeyEvent.VK_1)
-//            data.setDiff(1);
-//        if (aKeyCode == KeyEvent.VK_2)
-//            data.setDiff(2);
-//        if (aKeyCode == KeyEvent.VK_3)
-//            data.setDiff(20);
-//        active = false;
     }
 
     public boolean isActive() { return active; }
@@ -60,20 +51,19 @@ public class MainMenuState extends GameState {
 
         logo = Toolkit.getDefaultToolkit().getImage("GameDemo/src/Images/logo.png");
 
-        String text = "Choose you difficulty";
+        String text = "Choose your difficulty";
         String textDiffEz="1 --> Easy";
         String textDiffMed="2 --> Medium";
         String textDiffHrd="3 --> Hard";
-        int textWidth = g.getFontMetrics().stringWidth(text);
-        int textWidthEz = g.getFontMetrics().stringWidth(textDiffEz);
-        int textWidthMed = g.getFontMetrics().stringWidth(textDiffEz);
-        int textWidthHrd = g.getFontMetrics().stringWidth(textDiffEz);
+
         g.setColor(Color.white);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawImage(logo,150,100,null);
-        g.drawString(text, 550, 550);
-        g.drawString(textDiffEz, 575, 600);
-        g.drawString(textDiffMed, 575, 630);
-        g.drawString(textDiffHrd, 575, 660);
+        g.drawString(text, 465, 550);
+        g.drawString(textDiffEz, 540, 600);
+        g.drawString(textDiffMed, 540, 630);
+        g.drawString(textDiffHrd, 540, 660);
+        g.drawString(textDiffHrd, 540, 660);
 
     }
     @Override
