@@ -32,6 +32,7 @@ public class WinState extends GameState{
     public boolean isActive() { return active; }
 
     public String next() {
+    	data.resetData();
         return "Welcome";
     }
 
@@ -43,6 +44,7 @@ public class WinState extends GameState{
 
 
         String choice="Press any key to continue to the main menu";
+        String score="Score: "+data.getScore();
 
 
         g.setColor(Color.white);
@@ -50,6 +52,7 @@ public class WinState extends GameState{
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 
         g.drawString(choice, 360, 560);
+        g.drawString(score, 570, 450);
 
 
     }

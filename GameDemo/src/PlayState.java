@@ -44,11 +44,11 @@ public class PlayState extends GameState {
 
 	@Override
 	public void enter(Object memento) {
-
 		player=new Player((width/2)+25,height-50);
 		rocket = new Rocket();
 		active = true;
 		finishLevelOne=false;
+		gameWon=false;
 		deltaTimeAverage = 0;
 		data=(Data) memento;
 
@@ -105,11 +105,11 @@ public class PlayState extends GameState {
 			}
 
 			else {
-				for (int i = 0; i < 7; i++) {//4 rows of enemies
-					for (int j = 0; j < 10; j++) {//8 cols of enemies
+				for (int i = 0; i < 7; i++) {
+					for (int j = 0; j < 10; j++) {
 
-						enemies.get(i*2+j).setX_enemy((width/3) + 60 * j);
-						enemies.get(i*2+j).setY_enemy((height/6) + 60 * i);
+						enemies.get(i*10+j).setX_enemy((width/3) + 60 * j);
+						enemies.get(i*10+j).setY_enemy((height/6) + 60 * i);
 					}
 				}
 			}
@@ -176,11 +176,11 @@ public class PlayState extends GameState {
 			else if(data.getLevel()==2) {
 				gameWon=true;
 			}
-			active=false;
 			deaths=0;
 			data.setLives(3);
+			gameOver=false;
 			lostHealth=false;
-
+			active=false;
 		}
 
 		deltaTimeAverage = deltaTimeAverage* 0.9f + 0.1f*(float)deltaTime;
@@ -222,12 +222,8 @@ public class PlayState extends GameState {
 
 				//check collision with player
 				if (y > height-100) {
-					//need to reduce live after collision
 					active = false;
-					//                    gameOver=true;
 					lostHealth=true;
-					//System.out.println("finish");
-					// change screen
 				}
 
 
@@ -267,7 +263,6 @@ public class PlayState extends GameState {
 
 			float y = rocket.getY_rocket();
 			y -= 6;
-			//System.out.println(rocket.getX_rocket() +" " + rocket.getY_rocket());
 			if (y < 0) {
 				rocket.setIsVisible(false);
 			} else {
@@ -292,7 +287,6 @@ public class PlayState extends GameState {
 		}
 		else if(gameWon)
 		{
-			data.resetData();
 			return "GameFinished";
 		}
 		else
@@ -302,10 +296,10 @@ public class PlayState extends GameState {
 
 	private void reduceLives() {
 		data.setLives(data.getLives()-1);
-		if(data.getLives()==0) {
+		if(data.getLives()==1) {
 			gameOver=true;
+			active=false;
 			lostHealth=false;
-			data.setLives(3);
 		}
 	}
 
