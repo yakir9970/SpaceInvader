@@ -19,15 +19,33 @@ public class MainMenuState extends GameState {
     }
 
     public void processKeyReleased(int aKeyCode) {
-        if (aKeyCode == KeyEvent.VK_ESCAPE)
-            System.exit(0);
-        if (aKeyCode == KeyEvent.VK_1)
-            data.setDiff(1);
-        if (aKeyCode == KeyEvent.VK_2)
-            data.setDiff(2);
-        if (aKeyCode == KeyEvent.VK_3)
-            data.setDiff(20);
-        active = false;
+
+        switch (aKeyCode) {
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+                break;
+            case KeyEvent.VK_1:
+                data.setDiff(1);
+                break;
+            case KeyEvent.VK_2:
+                data.setDiff(2);
+                break;
+            case KeyEvent.VK_3:
+                data.setDiff(20);
+                break;
+        }
+
+        if(aKeyCode==KeyEvent.VK_ESCAPE||aKeyCode==KeyEvent.VK_1||aKeyCode==KeyEvent.VK_2||aKeyCode==KeyEvent.VK_3)
+            active = false;
+//        if (aKeyCode == KeyEvent.VK_ESCAPE)
+//            System.exit(0);
+//        if (aKeyCode == KeyEvent.VK_1)
+//            data.setDiff(1);
+//        if (aKeyCode == KeyEvent.VK_2)
+//            data.setDiff(2);
+//        if (aKeyCode == KeyEvent.VK_3)
+//            data.setDiff(20);
+//        active = false;
     }
 
     public boolean isActive() { return active; }
