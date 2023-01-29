@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PlayState extends GameState {
 	Data data;
+	final int NUM_OF_ENEMIES = 54;
 
 	int width, height;
 	int deaths;
@@ -167,7 +168,7 @@ public class PlayState extends GameState {
 
 	public void update(long deltaTime) {
 		// i try
-		if (deaths==1) {
+		if (deaths==NUM_OF_ENEMIES) {
 
 			if(data.getLevel()==1) {
 				data.setLevel(2);
